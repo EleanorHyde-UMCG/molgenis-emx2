@@ -46,23 +46,24 @@ podTemplate(inheritFrom:'shared', containers: [
         }
         stage('Build, Test') {
             container('java') {
-                checkout scm
-                sh 'apt update'
-                sh 'apt -y install git'
-                sh 'apt -y install docker.io'
-                sh 'git fetch --depth 1000'
-                sh "git config user.email \"m.a.swertz@rug.nl\""
-                sh "git config user.name \"molgenis-jenkins\""
-                sh 'git config url.https://.insteadOf git://'
-                sh "set +x && echo \"${DOCKER_PASSWORD}\" | docker login -u \"${DOCKER_USERNAME}\" --password-stdin"
-                sh "./gradlew test jacocoMergedReport sonarqube shadowJar jib release \
-            -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization=molgenis -Dsonar.host.url=https://sonarcloud.io \
-            -Dorg.ajoberstar.grgit.auth.username=${GITHUB_TOKEN} -Dorg.ajoberstar.grgit.auth.password "
                 script {
-                    def props = readProperties interpolate: true, file: 'build/jenkins.properties'
+                    checkout scm
+                    sh 'apt update'
+                    sh 'apt -y install git'
+                    sh 'apt -y install docker.io'
+                    sh 'git fetch --depth 1000'
+                    sh "git config user.email \"m.a.swertz@rug.nl\""
+                    sh "git config user.name \"molgenis-jenkins\""
+                    sh 'git config url.https://.insteadOf git://'
+                    sh "set +x && echo \"${DOCKER_PASSWORD}\" | docker login -u \"${DOCKER_USERNAME}\" --password-stdin"
+                    sh "./gradlew test jacocoMergedReport sonarqube shadowJar jib release \
+                        -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization=molgenis -Dsonar.host.url=https://sonarcloud.io \
+                        -Dorg.ajoberstar.grgit.auth.username=${GITHUB_TOKEN} -Dorg.ajoberstar.grgit.auth.password"  
+                    def props = readProperties file: 'jenkins.properties'
                     env['TAG_NAME'] = props['tagName']
                 }
             }
+            
             container('rancher') {
                 script {
                     if (env.TAG_NAME) {
