@@ -72,6 +72,14 @@ if (version.toString().endsWith('-SNAPSHOT')) {
     imageName = "docker.io/molgenis/molgenis-emx2-snapshot"
     tagName = "${project.version.toString()}-${ext.hash}"
 }
+// write a file to pickup in deployment to use specific tags in upgrade
+if (System.env['JENKINS_HOME']) {
+  task jenkinsProps(type: WriteProperties) {
+    outputFile file('build/jenkins.properties')
+    property 'version', tagName
+  }
+}
+
 jib {
     from {
         image = 'adoptopenjdk:13-jdk-hotspot-bionic'
