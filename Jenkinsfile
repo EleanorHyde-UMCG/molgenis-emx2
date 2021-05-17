@@ -59,7 +59,7 @@ podTemplate(inheritFrom:'shared', containers: [
                     sh "./gradlew test jacocoMergedReport sonarqube shadowJar jib release \
                         -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization=molgenis -Dsonar.host.url=https://sonarcloud.io \
                         -Dorg.ajoberstar.grgit.auth.username=${GITHUB_TOKEN} -Dorg.ajoberstar.grgit.auth.password"  
-                    def props = readProperties file: 'jenkins.properties'
+                    def props = readProperties file: 'build/jenkins.properties'
                     env['TAG_NAME'] = props['tagName']
                 }
             }
