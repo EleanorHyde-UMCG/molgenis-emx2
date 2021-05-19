@@ -56,10 +56,10 @@ podTemplate(inheritFrom:'shared', containers: [
                     sh "git config user.name \"molgenis-jenkins\""
                     sh 'git config url.https://.insteadOf git://'
                     sh "set +x && echo \"${DOCKER_PASSWORD}\" | docker login -u \"${DOCKER_USERNAME}\" --password-stdin"
-                    sh "./gradlew test jacocoMergedReport sonarqube shadowJar jib release \
+                    sh "JENKINS_AGENT_WORKDIR=${JENKINS_AGENT_WORKDIR} ./gradlew test jacocoMergedReport sonarqube shadowJar jib release \
                         -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization=molgenis -Dsonar.host.url=https://sonarcloud.io \
                         -Dorg.ajoberstar.grgit.auth.username=${GITHUB_TOKEN} -Dorg.ajoberstar.grgit.auth.password"  
-                    def props = readProperties file: 'build/jenkins.properties'
+                    def props = readProperties file: 'build/ci.properties'
                     env['TAG_NAME'] = props['tagName']
                 }
             }
