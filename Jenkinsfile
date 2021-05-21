@@ -59,7 +59,6 @@ podTemplate(inheritFrom:'shared', containers: [
                     sh "./gradlew test jacocoMergedReport sonarqube shadowJar jib release ci \
                         -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization=molgenis -Dsonar.host.url=https://sonarcloud.io \
                         -Dorg.ajoberstar.grgit.auth.username=${GITHUB_TOKEN} -Dorg.ajoberstar.grgit.auth.password"  
-                    sh "ls -ltra"
                     def props = readProperties file: 'build/ci.properties'
                     env['TAG_NAME'] = props['tagName']
                 }
@@ -67,7 +66,7 @@ podTemplate(inheritFrom:'shared', containers: [
             
             container('rancher') {
                 script {
-                    if (env.TAG_NAME) {
+                    if (env.TAG_NAME && !env.TAG_NAME.contains('-PR-')) {
                         sh 'rancher context switch dev-molgenis'
                         sh "rancher apps upgrade --set image.tag=${TAG_NAME} --force molgenis-emx2 0.0.13"
                     }
