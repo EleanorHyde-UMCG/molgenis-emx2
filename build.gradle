@@ -13,8 +13,8 @@ plugins {
 }
 
 
-targetCompatibility = '16'
-sourceCompatibility = '16'
+targetCompatibility = '11'
+sourceCompatibility = '11'
 
 sonarqube {
     properties {
@@ -74,13 +74,13 @@ if (version.toString().endsWith('-SNAPSHOT')) {
 }
 // write a file to pickup in deployment to use specific tags in upgrade
 task ci(type: WriteProperties) {
-    outputFile file('build/ci.properties')
-    property 'tagName', tagName
+  outputFile file('build/ci.properties')
+  property 'tagName', tagName
 }
 
 jib {
     from {
-        image = 'adoptopenjdk:16-jdk-hotspot-focal'
+        image = 'adoptopenjdk:13-jdk-hotspot-bionic'
     }
     to {
         image = imageName
