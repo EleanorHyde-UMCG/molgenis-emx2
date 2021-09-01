@@ -131,6 +131,8 @@ conception
 * computed values?
 * create validation procedure for Schema/Table/Column so we can give complete graphqlError messages and remove model
   checks from from SQL parts
+* make it possible to search EITHER in the variable columns OR in the metadata (eg mg_insertedBy) OR both, and also make it possible to use AND/OR functionality in the searches 
+* make the filters which the user can choose from on LHS dependent on the list displayed on the RHS so that only filters which are actually possible are displayed (bol.com style)
 
 ### someday maybe
 
