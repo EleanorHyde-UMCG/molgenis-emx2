@@ -8,7 +8,7 @@ The Data Catalogue only describes the variables, it does **not** contain the act
 
 ### Find variables
 
-You can use the filters and search bar to subset variables. In the example below, four filters are used, one network
+You can use the filters and search bar to subset variables in the [Variable Explorer] (https://data-catalogue.molgeniscloud.org/catalogue/catalogue/#/variable-explorer/). In the example below, four filters are used, one network
 filter and three topic filters.
 
 ![Variable explorer filters](../img/cat_variable-explorer.png)
